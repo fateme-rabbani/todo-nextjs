@@ -1,6 +1,6 @@
 "use client"
 import styled from "styled-components";
-import { useState, FC } from "react";
+import { useState } from "react";
 
 import Input from "../components/Input";
 import Column from "../components/Column";
@@ -34,7 +34,6 @@ const Board = (props: ParamsType) => {
         { id: makeId(), des: "third", status: "done" }]
     )
     const [taskInp, setTaskInp] = useState("")
-    console.log(props.params?.boardNumber)
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
@@ -78,5 +77,5 @@ const Wrapper = styled.div`
 `
 
 const Title = styled.h1`
-    
+    color:#3b3bb1;
 `
