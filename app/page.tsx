@@ -27,7 +27,7 @@ const Home: FC = () => {
   return <Wrapper>
     <Input handleSubmit={handleSubmit} value={newBoard} setValue={setNewBoard} />
     <Items>{boards.map((board, i) => <Link key={i} href={`/${board.id}`}>
-      <Item key={i}>{board.des}</Item></Link>)}</Items>
+      <Item key={i}>board {board.des}</Item></Link>)}</Items>
   </Wrapper>
 }
 
