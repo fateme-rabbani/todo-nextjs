@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { FC } from "react"
 
-import { TasksListProps } from "@/app/page"
+import { TasksListProps } from "@/app/[boardNumber]/page"
 import Select from "../Select"
 
 export const Card: FC<TasksListProps> = ({ tasks, status, onChange, remove }) => {

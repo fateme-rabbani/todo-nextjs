@@ -1,8 +1,7 @@
 import styled from "styled-components"
 import { FC } from "react"
 
-import { Status } from "@/app/page"
-
+import { Status } from "@/app/[boardNumber]/page"
 interface Select {
     status: Status
     id: number

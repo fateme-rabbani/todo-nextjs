@@ -68,12 +68,12 @@ const Board = (props: ParamsType) => {
 export default Board
 
 const Wrapper = styled.div`
-  background-color: #ccc;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  gap: 20px;
-  padding: 20px;
+    background-color: #ccc;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    padding: 20px;
 `
 
 const Title = styled.h1`
