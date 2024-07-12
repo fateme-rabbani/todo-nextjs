@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FC, useState } from "react";
 import Link from "next/link";
 
-import Input from "./components/Input";
+import Input from "../components/Input";
 
 interface Board {
   id: number;
