@@ -25,6 +25,8 @@ interface BoardContextType {
   removeTask: (taskId: number, boardId: number) => void;
   changeStatus: (id: any, status: Status, boardId: number) => void;
   removeBoard: (id: number) => void;
+  handleEditTaskTitle: (boardId: number, taskId: number, desc: string) => void;
+  handleEditBoardTitle: (boardId: number, desc: string) => void;
 }
 
 export const BoardContext = createContext<BoardContextType>(null as never);
@@ -101,6 +103,40 @@ export default function RootLayout({
     [boards]
   );
 
+  const handleEditTaskTitle = useCallback(
+    (boardId: number, taskId: number, desc: string) => {
+      const newDes = prompt("Edit task description:", desc);
+      if (newDes !== null) {
+        setBoards((prevBoard) =>
+          prevBoard.map((board) =>
+            board.id !== boardId
+              ? board
+              : {
+                  ...board,
+                  tasks: board.tasks.map((task) => {
+                    if (task.id !== taskId) return task;
+                    return { ...task, taskDes: newDes };
+                  }),
+                }
+          )
+        );
+      }
+    },
+    []
+  );
+
+  const handleEditBoardTitle = useCallback((boardId: number, desc: string) => {
+    const newDes = prompt("Edit task description:", desc);
+    if (newDes !== null) {
+      setBoards((boards) =>
+        boards.map((board) => {
+          if (board.id !== boardId) return board;
+          return { ...board, des: newDes };
+        })
+      );
+    }
+  }, []);
+
   const contextValue = useMemo(
     () => ({
       boards,
@@ -109,8 +145,19 @@ export default function RootLayout({
       removeTask,
       changeStatus,
       removeBoard,
+      handleEditTaskTitle,
+      handleEditBoardTitle,
     }),
-    [boards, createTask, createBoard, removeTask, changeStatus, removeBoard]
+    [
+      boards,
+      createTask,
+      createBoard,
+      removeTask,
+      changeStatus,
+      removeBoard,
+      handleEditTaskTitle,
+      handleEditBoardTitle,
+    ]
   );
 
   return (

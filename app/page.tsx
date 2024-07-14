@@ -7,7 +7,8 @@ import Input from "../components/Input";
 import { BoardContext } from "./layout";
 
 const Home: FC<NextPageProps> = () => {
-  const { boards, createBoard, removeBoard } = useContext(BoardContext);
+  const { boards, createBoard, removeBoard, handleEditBoardTitle } =
+    useContext(BoardContext);
 
   return (
     <Wrapper>
@@ -16,7 +17,9 @@ const Home: FC<NextPageProps> = () => {
         {boards.map((board, i) => (
           <Item key={i}>
             <Link href={`/${board.id}`}>
-              <span>board {board.des}</span>
+              <span onClick={() => handleEditBoardTitle(board.id, board.des)}>
+                {board.des}
+              </span>
             </Link>
             <Button onClick={() => removeBoard(board.id)}>delete</Button>
           </Item>
