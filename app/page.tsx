@@ -1,40 +1,17 @@
 "use client";
 import styled from "styled-components";
-import { FC, useState } from "react";
+import { FC, useContext } from "react";
 import Link from "next/link";
 
 import Input from "../components/Input";
-
-interface Board {
-  id: number;
-  des: string;
-}
-
-let id = 0;
-const makeId = () => ++id;
-
-const d = [
-  { id: makeId(), des: "first" },
-  { id: makeId(), des: "second" },
-];
+import { BoardContext } from "./layout";
 
 const Home: FC = () => {
-  const [boards, setBoards] = useState<Board[]>(d);
+  const { boards, createBoard } = useContext(BoardContext);
 
   return (
     <Wrapper>
-      <Input
-        handleSubmit={(value) => {
-          setBoards([...boards, { id: makeId(), des: value }]);
-        }}
-      />
-      <button
-        onClick={() => {
-          setBoards((prev) => [...prev, { id: makeId(), des: "gholam" }]);
-        }}
-      >
-        add
-      </button>
+      <Input handleSubmit={(value) => createBoard(value)} />
       <Items>
         {boards.map((board, i) => (
           <Link key={i} href={`/${board.id}`}>

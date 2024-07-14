@@ -1,38 +1,36 @@
-import styled from "styled-components"
-import { FC } from "react"
+import styled from "styled-components";
+import { FC } from "react";
 
-import Card from "../Card"
-import { TasksListProps } from "@/app/[boardNumber]/page"
+import { TasksListProps } from "@/app/[boardNumber]/page";
+import Card from "../Card";
 
 interface Column extends TasksListProps {
-    key: number,
+  key: number;
 }
 
-const Column: FC<Column> = ({ status, key, tasks, onChange, remove }) => {
-    return <Wrapper key={key}>
-        <Title>{status}</Title>
-        <Card
-            tasks={tasks}
-            status={status}
-            onChange={onChange}
-            remove={remove} />
+const Column: FC<Column> = ({ status, key, tasks, boardId }) => {
+  return (
+    <Wrapper key={key}>
+      <Title>{status}</Title>
+      <Card tasks={tasks} status={status} boardId={boardId} />
     </Wrapper>
-}
+  );
+};
 
-export default Column
+export default Column;
 
 const Wrapper = styled.div`
-    background-color: #9090de;
-    padding: 20px;
-    border-radius: 5px;
-    min-width: 250px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-`
+  background-color: #9090de;
+  padding: 20px;
+  border-radius: 5px;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
 const Title = styled.h1`
-    color: #fff;
-    background-color: #3b3bb1;
-    padding: 10px;
-    border-radius: 5px;
-`
+  color: #fff;
+  background-color: #3b3bb1;
+  padding: 10px;
+  border-radius: 5px;
+`;

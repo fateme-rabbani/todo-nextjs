@@ -1,37 +1,37 @@
-import styled from "styled-components"
-import { FC } from "react"
+import styled from "styled-components";
+import { FC, useContext } from "react";
 
-import { Status } from "@/app/[boardNumber]/page"
+import { Status, BoardContext } from "@/app/layout";
 interface Select {
-    status: Status
-    id: number
-    onChange: (id: number, status: Status) => void,
-    remove: (id: number) => void
+  status: Status;
+  id: number;
+  boardId: number;
 }
 
-const Select: FC<Select> = ({ status, id, onChange, remove }) => {
+const Select: FC<Select> = ({ status, id, boardId }) => {
+  const { removeTask, changeStatus } = useContext(BoardContext);
 
-    const handleChange = (id: number, e: any) => {
-        const value = e.target.value
+  const handleChange = (id: number, e: any) => {
+    const value = e.target.value;
 
-        if (value === "remove")
-            remove(id)
-        else
-            onChange(id, value)
-    }
-    return <Wrapper value={status} onChange={(e: any) => handleChange(id, e)}>
-        <option value="todo">todo</option>
-        <option value="doing">doing</option>
-        <option value="done">done</option>
-        <option value="remove">remove</option>
+    if (value === "remove") removeTask(id, boardId);
+    else changeStatus(id, value, boardId);
+  };
+  return (
+    <Wrapper value={status} onChange={(e: any) => handleChange(id, e)}>
+      <option value="todo">todo</option>
+      <option value="doing">doing</option>
+      <option value="done">done</option>
+      <option value="remove">remove</option>
     </Wrapper>
-}
+  );
+};
 
-export default Select
+export default Select;
 
 const Wrapper = styled.select`
-    background-color: #3b3bb1;
-    color: #fff;
-    padding: 5px;
-    border-radius: 5px;
-`
+  background-color: #3b3bb1;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+`;
