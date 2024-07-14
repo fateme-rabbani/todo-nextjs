@@ -4,18 +4,14 @@ import { FC } from "react";
 import { TasksListProps } from "@/app/[boardNumber]/page";
 import Card from "../Card";
 
-interface Column extends TasksListProps {
-  key: number;
-}
+interface ColumnProps extends TasksListProps {}
 
-const Column: FC<Column> = ({ status, key, tasks, boardId }) => {
-  return (
-    <Wrapper key={key}>
-      <Title>{status}</Title>
-      <Card tasks={tasks} status={status} boardId={boardId} />
-    </Wrapper>
-  );
-};
+const Column: FC<ColumnProps> = ({ status, tasks, boardId }) => (
+  <Wrapper>
+    <Title>{status}</Title>
+    <Card tasks={tasks} status={status} boardId={boardId} />
+  </Wrapper>
+);
 
 export default Column;
 
@@ -28,6 +24,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 15px;
 `;
+
 const Title = styled.h1`
   color: #fff;
   background-color: #3b3bb1;

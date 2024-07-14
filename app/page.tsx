@@ -6,7 +6,7 @@ import Link from "next/link";
 import Input from "../components/Input";
 import { BoardContext } from "./layout";
 
-const Home: FC = () => {
+const Home: FC<NextPageProps> = () => {
   const { boards, createBoard } = useContext(BoardContext);
 
   return (
@@ -15,7 +15,7 @@ const Home: FC = () => {
       <Items>
         {boards.map((board, i) => (
           <Link key={i} href={`/${board.id}`}>
-            <Item key={i}>board {board.des}</Item>
+            <Item>board {board.des}</Item>
           </Link>
         ))}
       </Items>

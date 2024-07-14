@@ -11,16 +11,16 @@ const Input: FC<Input> = ({ handleSubmit }) => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
+        if (!value) return;
         handleSubmit(value);
         setValue("");
       }}
     >
       <InputStyle value={value} onChange={(e) => setValue(e.target.value)} />
-      <Button type="submit" value="add" />
+      <Button type="submit" value="add" disabled={!value} />
     </form>
   );
 };
-
 export default Input;
 
 const Button = styled.input`
@@ -29,6 +29,7 @@ const Button = styled.input`
   font-size: 20px;
   background-color: #9090de;
 `;
+
 const InputStyle = styled.input`
   border-radius: 5px;
   height: 27px;

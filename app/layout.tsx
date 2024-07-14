@@ -28,37 +28,15 @@ interface BoardContextType {
 
 export const BoardContext = createContext<BoardContextType>(null as never);
 
-let id = 0,
-  _id = 0;
-
-const makeId = () => ++id;
-const $makeId = () => ++_id;
+let _id = 0;
+const makeId = () => ++_id;
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [boards, setBoards] = useState<Board[]>([
-    {
-      id: makeId(),
-      des: "first",
-      tasks: [
-        { id: $makeId(), taskDes: "first des", status: "todo" },
-        { id: $makeId(), taskDes: "second des", status: "doing" },
-        { id: $makeId(), taskDes: "third des", status: "done" },
-      ],
-    },
-    {
-      id: makeId(),
-      des: "second",
-      tasks: [
-        { id: $makeId(), taskDes: "first des", status: "todo" },
-        { id: $makeId(), taskDes: "second des", status: "doing" },
-        { id: $makeId(), taskDes: "third des", status: "done" },
-      ],
-    },
-  ]);
+  const [boards, setBoards] = useState<Board[]>([]);
 
   const createTask = (value: string, id: number) => {
     setBoards((prevBoard) =>
@@ -68,7 +46,7 @@ export default function RootLayout({
               ...board,
               tasks: [
                 ...board.tasks,
-                { id: $makeId(), taskDes: value, status: "todo" },
+                { id: makeId(), taskDes: value, status: "todo" },
               ],
             }
           : board
@@ -76,18 +54,7 @@ export default function RootLayout({
     );
   };
   const createBoard = (value: string) => {
-    setBoards([
-      ...boards,
-      {
-        id: makeId(),
-        des: value,
-        tasks: [
-          { id: $makeId(), taskDes: "first des", status: "todo" },
-          { id: $makeId(), taskDes: "second des", status: "doing" },
-          { id: $makeId(), taskDes: "third des", status: "done" },
-        ],
-      },
-    ]);
+    setBoards([...boards, { id: makeId(), des: value, tasks: [] }]);
   };
 
   const removeTask = (taskId: number, boardId: number) => {

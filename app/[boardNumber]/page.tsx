@@ -1,6 +1,8 @@
 "use client";
+
+import { FC, useContext } from "react";
 import styled from "styled-components";
-import { useContext } from "react";
+import z from "zod";
 
 import Input from "../../components/Input";
 import Column from "../../components/Column";
@@ -18,35 +20,34 @@ export interface TasksListProps {
   boardId: number;
 }
 
-type ParamsType = {
-  params: { boardNumber: string };
-};
+const paramsSchema = z.object({
+  boardNumber: z.coerce.number(),
+});
 
-const Board = (props: ParamsType) => {
+const Board: FC<NextPageProps> = ({ params }) => {
+  const { boardNumber } = paramsSchema.parse(params);
+
   const { boards, createTask } = useContext(BoardContext);
 
-  const board = boards.filter(
-    (board) => board.id === +props.params.boardNumber
-  )[0];
+  const board = boards.find((board) => board.id === boardNumber);
+
+  if (!board) return <h1>Board not found!</h1>;
 
   return (
     <Wrapper>
-      <Title>board {props.params.boardNumber}</Title>
-      <Input
-        handleSubmit={(value) => createTask(value, +props.params.boardNumber)}
-      />
-      {statuses.map((status, i) => (
+      <Title>board {boardNumber}</Title>
+      <Input handleSubmit={(value) => createTask(value, boardNumber)} />
+      {statuses.map((status) => (
         <Column
+          key={status}
           status={status}
-          key={i}
-          tasks={board?.tasks}
-          boardId={+props.params.boardNumber}
+          tasks={board.tasks}
+          boardId={boardNumber}
         />
       ))}
     </Wrapper>
   );
 };
-
 export default Board;
 
 const Wrapper = styled.div`
