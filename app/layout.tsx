@@ -2,7 +2,7 @@
 
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { createContext, useState } from "react";
+import { createContext, useState, useCallback, useMemo } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,7 +39,7 @@ export default function RootLayout({
 }>) {
   const [boards, setBoards] = useState<Board[]>([]);
 
-  const createTask = (value: string, id: number) => {
+  const createTask = useCallback((value: string, id: number) => {
     setBoards((prevBoard) =>
       prevBoard.map((board) =>
         board.id === id
@@ -53,12 +53,16 @@ export default function RootLayout({
           : board
       )
     );
-  };
-  const createBoard = (value: string) => {
-    setBoards([...boards, { id: makeId(), des: value, tasks: [] }]);
-  };
+  }, []);
 
-  const removeTask = (taskId: number, boardId: number) => {
+  const createBoard = useCallback(
+    (value: string) => {
+      setBoards([...boards, { id: makeId(), des: value, tasks: [] }]);
+    },
+    [boards]
+  );
+
+  const removeTask = useCallback((taskId: number, boardId: number) => {
     setBoards((prevBoard) =>
       prevBoard.map((board) =>
         board.id === boardId
@@ -69,40 +73,49 @@ export default function RootLayout({
           : board
       )
     );
-  };
+  }, []);
 
-  const changeStatus = (id: any, status: Status, boardId: number) => {
-    setBoards((prevBoard) =>
-      prevBoard.map((board) =>
-        board.id !== boardId
-          ? board
-          : {
-              ...board,
-              tasks: board.tasks.map((task) => {
-                if (task.id !== id) return task;
-                return { ...task, status };
-              }),
-            }
-      )
-    );
-  };
+  const changeStatus = useCallback(
+    (id: any, status: Status, boardId: number) => {
+      setBoards((prevBoard) =>
+        prevBoard.map((board) =>
+          board.id !== boardId
+            ? board
+            : {
+                ...board,
+                tasks: board.tasks.map((task) => {
+                  if (task.id !== id) return task;
+                  return { ...task, status };
+                }),
+              }
+        )
+      );
+    },
+    []
+  );
 
-  const removeBoard = (id: number) => {
-    setBoards(boards.filter((board) => board.id !== id));
-  };
+  const removeBoard = useCallback(
+    (id: number) => {
+      setBoards(boards.filter((board) => board.id !== id));
+    },
+    [boards]
+  );
+
+  const contextValue = useMemo(
+    () => ({
+      boards,
+      createTask,
+      createBoard,
+      removeTask,
+      changeStatus,
+      removeBoard,
+    }),
+    [boards, createTask, createBoard, removeTask, changeStatus, removeBoard]
+  );
 
   return (
     <html lang="en">
-      <BoardContext.Provider
-        value={{
-          boards,
-          createTask,
-          createBoard,
-          removeTask,
-          changeStatus,
-          removeBoard,
-        }}
-      >
+      <BoardContext.Provider value={contextValue}>
         <body className={inter.className}>{children}</body>
       </BoardContext.Provider>
     </html>
