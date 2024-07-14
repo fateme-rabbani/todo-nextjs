@@ -24,6 +24,7 @@ interface BoardContextType {
   createBoard: (value: string) => void;
   removeTask: (taskId: number, boardId: number) => void;
   changeStatus: (id: any, status: Status, boardId: number) => void;
+  removeBoard: (id: number) => void;
 }
 
 export const BoardContext = createContext<BoardContextType>(null as never);
@@ -86,6 +87,10 @@ export default function RootLayout({
     );
   };
 
+  const removeBoard = (id: number) => {
+    setBoards(boards.filter((board) => board.id !== id));
+  };
+
   return (
     <html lang="en">
       <BoardContext.Provider
@@ -95,6 +100,7 @@ export default function RootLayout({
           createBoard,
           removeTask,
           changeStatus,
+          removeBoard,
         }}
       >
         <body className={inter.className}>{children}</body>

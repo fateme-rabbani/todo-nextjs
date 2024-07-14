@@ -7,16 +7,19 @@ import Input from "../components/Input";
 import { BoardContext } from "./layout";
 
 const Home: FC<NextPageProps> = () => {
-  const { boards, createBoard } = useContext(BoardContext);
+  const { boards, createBoard, removeBoard } = useContext(BoardContext);
 
   return (
     <Wrapper>
       <Input handleSubmit={(value) => createBoard(value)} />
       <Items>
         {boards.map((board, i) => (
-          <Link key={i} href={`/${board.id}`}>
-            <Item>board {board.des}</Item>
-          </Link>
+          <Item key={i}>
+            <Link href={`/${board.id}`}>
+              <span>board {board.des}</span>
+            </Link>
+            <Button onClick={() => removeBoard(board.id)}>delete</Button>
+          </Item>
         ))}
       </Items>
     </Wrapper>
@@ -38,4 +41,11 @@ const Item = styled.h1`
   padding: 40px;
   background-color: #9090de;
   border-radius: 5px;
+`;
+const Button = styled.div`
+  background-color: #3b3bb1;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 12px;
+  text-align: center;
 `;
