@@ -21,7 +21,14 @@ const Home: FC<NextPageProps> = () => {
                 {board.des}
               </span>
             </Link>
-            <Button onClick={() => removeBoard(board.id)}>delete</Button>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                removeBoard(board.id);
+              }}
+            >
+              delete
+            </Button>
           </Item>
         ))}
       </Items>

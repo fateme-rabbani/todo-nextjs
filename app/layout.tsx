@@ -1,8 +1,9 @@
 "use client";
 
-import { Inter } from "next/font/google";
-import "./globals.css";
 import { createContext, useState, useCallback, useMemo } from "react";
+import { Inter } from "next/font/google";
+
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,23 +14,25 @@ export interface Task {
   taskDes: string;
   status: Status;
 }
-interface Board {
+
+export interface Board {
   id: number;
   des: string;
   tasks: Task[];
 }
-interface BoardContextType {
+
+export interface BoardContext {
   boards: Board[];
-  createTask: (value: string, id: number) => void;
-  createBoard: (value: string) => void;
+  createTask: (taskDes: string, boardId: number) => void;
+  createBoard: (des: string) => void;
   removeTask: (taskId: number, boardId: number) => void;
   changeStatus: (id: any, status: Status, boardId: number) => void;
   removeBoard: (id: number) => void;
   handleEditTaskTitle: (boardId: number, taskId: number, desc: string) => void;
-  handleEditBoardTitle: (boardId: number, desc: string) => void;
+  handleEditBoardTitle: (boardId: number, des: string) => void;
 }
 
-export const BoardContext = createContext<BoardContextType>(null as never);
+export const BoardContext = createContext<BoardContext>(null as never);
 
 let _id = 0;
 const makeId = () => ++_id;
@@ -41,28 +44,31 @@ export default function RootLayout({
 }>) {
   const [boards, setBoards] = useState<Board[]>([]);
 
-  const createTask = useCallback((value: string, id: number) => {
-    setBoards((prevBoard) =>
-      prevBoard.map((board) =>
-        board.id === id
-          ? {
-              ...board,
-              tasks: [
-                ...board.tasks,
-                { id: makeId(), taskDes: value, status: "todo" },
-              ],
-            }
-          : board
-      )
-    );
-  }, []);
-
-  const createBoard = useCallback(
-    (value: string) => {
-      setBoards([...boards, { id: makeId(), des: value, tasks: [] }]);
+  const createTask = useCallback<BoardContext["createTask"]>(
+    (taskDes, boardId) => {
+      setBoards((prevBoards) =>
+        prevBoards.map((board) =>
+          board.id === boardId
+            ? {
+                ...board,
+                tasks: [
+                  ...board.tasks,
+                  { id: makeId(), taskDes, status: "todo" },
+                ],
+              }
+            : board
+        )
+      );
     },
-    [boards]
+    []
   );
+
+  const createBoard = useCallback((des: string) => {
+    setBoards((prevBoards) => [
+      ...prevBoards,
+      { id: makeId(), des, tasks: [] },
+    ]);
+  }, []);
 
   const removeTask = useCallback((taskId: number, boardId: number) => {
     setBoards((prevBoard) =>
@@ -85,10 +91,9 @@ export default function RootLayout({
             ? board
             : {
                 ...board,
-                tasks: board.tasks.map((task) => {
-                  if (task.id !== id) return task;
-                  return { ...task, status };
-                }),
+                tasks: board.tasks.map((task) =>
+                  task.id !== id ? task : { ...task, status }
+                ),
               }
         )
       );
@@ -96,12 +101,9 @@ export default function RootLayout({
     []
   );
 
-  const removeBoard = useCallback(
-    (id: number) => {
-      setBoards(boards.filter((board) => board.id !== id));
-    },
-    [boards]
-  );
+  const removeBoard = useCallback((id: number) => {
+    setBoards((prevBoards) => prevBoards.filter((board) => board.id !== id));
+  }, []);
 
   const handleEditTaskTitle = useCallback(
     (boardId: number, taskId: number, desc: string) => {
@@ -113,10 +115,9 @@ export default function RootLayout({
               ? board
               : {
                   ...board,
-                  tasks: board.tasks.map((task) => {
-                    if (task.id !== taskId) return task;
-                    return { ...task, taskDes: newDes };
-                  }),
+                  tasks: board.tasks.map((task) =>
+                    task.id !== taskId ? task : { ...task, taskDes: newDes }
+                  ),
                 }
           )
         );
@@ -125,44 +126,42 @@ export default function RootLayout({
     []
   );
 
-  const handleEditBoardTitle = useCallback((boardId: number, desc: string) => {
-    const newDes = prompt("Edit task description:", desc);
-    if (newDes !== null) {
-      setBoards((boards) =>
-        boards.map((board) => {
-          if (board.id !== boardId) return board;
-          return { ...board, des: newDes };
-        })
-      );
-    }
+  const handleEditBoardTitle = useCallback((boardId: number, des: string) => {
+    const newDes = prompt("Edit task description:", des);
+    if (!newDes) return;
+    setBoards((boards) =>
+      boards.map((board) =>
+        board.id !== boardId ? board : { ...board, des: newDes }
+      )
+    );
   }, []);
-
-  const contextValue = useMemo(
-    () => ({
-      boards,
-      createTask,
-      createBoard,
-      removeTask,
-      changeStatus,
-      removeBoard,
-      handleEditTaskTitle,
-      handleEditBoardTitle,
-    }),
-    [
-      boards,
-      createTask,
-      createBoard,
-      removeTask,
-      changeStatus,
-      removeBoard,
-      handleEditTaskTitle,
-      handleEditBoardTitle,
-    ]
-  );
 
   return (
     <html lang="en">
-      <BoardContext.Provider value={contextValue}>
+      <BoardContext.Provider
+        value={useMemo(
+          () => ({
+            boards,
+            createTask,
+            createBoard,
+            removeTask,
+            changeStatus,
+            removeBoard,
+            handleEditTaskTitle,
+            handleEditBoardTitle,
+          }),
+          [
+            boards,
+            createTask,
+            createBoard,
+            removeTask,
+            changeStatus,
+            removeBoard,
+            handleEditTaskTitle,
+            handleEditBoardTitle,
+          ]
+        )}
+      >
         <body className={inter.className}>{children}</body>
       </BoardContext.Provider>
     </html>
