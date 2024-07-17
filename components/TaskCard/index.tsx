@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { Box } from "@mui/material";
 import { FC, useContext } from "react";
 
 import { TasksListProps } from "@/app/[boardNumber]/page";
@@ -11,27 +11,26 @@ export const TaskCard: FC<TasksListProps> = ({ tasks, status, boardId }) => {
   return tasks
     ?.filter((task) => task.status === status)
     .map((task, i) => (
-      <Wrapper key={i}>
-        <Title
+      <Box
+        sx={{
+          background: "#5f5fc2",
+          padding: 1,
+          borderRadius: 1,
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+        }}
+        key={i}
+      >
+        <Box
+          component="h3"
+          sx={{ color: "#fff" }}
           onClick={() => handleEditTaskTitle(boardId, task.id, task.taskDes)}
         >
           {task.taskDes}
-        </Title>
+        </Box>
         <StatusDropDown status={task.status} id={task.id} boardId={boardId} />
-      </Wrapper>
+      </Box>
     ));
 };
 export default TaskCard;
-
-const Wrapper = styled.div`
-  background-color: #5f5fc2;
-  padding: 10px;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const Title = styled.h3`
-  color: #fff;
-`;

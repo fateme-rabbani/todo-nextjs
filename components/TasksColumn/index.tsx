@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { Box } from "@mui/material";
 import { FC } from "react";
 
 import { TasksListProps } from "@/app/[boardNumber]/page";
@@ -7,27 +7,30 @@ import TaskCard from "../TaskCard";
 interface ColumnProps extends TasksListProps {}
 
 const TasksColumn: FC<ColumnProps> = ({ status, tasks, boardId }) => (
-  <Wrapper>
-    <Title>{status}</Title>
+  <Box
+    sx={{
+      background: "#9090de",
+      padding: 2,
+      borderRadius: 1,
+      minWidth: 250,
+      display: "flex",
+      flexDirection: "column",
+      gap: 2,
+    }}
+  >
+    <Box
+      component="h1"
+      sx={{
+        color: "#fff",
+        background: "#3b3bb1",
+        padding: 2,
+        borderRadius: 1,
+      }}
+    >
+      {status}
+    </Box>
     <TaskCard tasks={tasks} status={status} boardId={boardId} />
-  </Wrapper>
+  </Box>
 );
 
 export default TasksColumn;
-
-const Wrapper = styled.div`
-  background-color: #9090de;
-  padding: 20px;
-  border-radius: 5px;
-  min-width: 250px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-`;
-
-const Title = styled.h1`
-  color: #fff;
-  background-color: #3b3bb1;
-  padding: 10px;
-  border-radius: 5px;
-`;

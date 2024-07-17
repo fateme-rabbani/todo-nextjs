@@ -1,74 +1,57 @@
 "use client";
-import styled from "styled-components";
+import { Box, Button, Stack, styled } from "@mui/material";
 import { FC, useContext } from "react";
 import Link from "next/link";
 
 import Input from "../components/TitleForm";
 import { BoardContext } from "./layout";
 
+export const CustomButton = styled(Button)({
+  color: "#fff",
+  background: "#3b3bb1",
+  padding: 10,
+  textAlign: "center",
+  fontSize: 12,
+  border: "2px solid #3B3BB1",
+  borderRadius: 10,
+});
+
 const Home: FC<NextPageProps> = () => {
   const { boards, createBoard, removeBoard, handleEditBoardTitle } =
     useContext(BoardContext);
 
   return (
-    <Wrapper>
+    <Stack direction="row" gap={1}>
       <Input handleSubmit={(value) => createBoard(value)} />
-      <Items>
+      <Stack direction="row" gap={1}>
         {boards.map((board, i) => (
           <Link key={i} href={`/${board.id}`}>
-            <Item>
-              <span>{board.des}</span>
-              <Buttons>
-                <Button
-                  onClick={(e) => {
+            <Box sx={{ padding: 5, background: "#9090de", borderRadius: 1 }}>
+              <Box component="h1">{board.des}</Box>
+              <Stack direction="row" gap={1}>
+                <CustomButton
+                  onClick={(e: any) => {
                     e.stopPropagation();
                     handleEditBoardTitle(board.id, board.des);
                   }}
                 >
                   edit
-                </Button>
-                <Button
-                  onClick={(e) => {
+                </CustomButton>
+                <CustomButton
+                  onClick={(e: any) => {
                     e.stopPropagation();
                     removeBoard(board.id);
                   }}
                 >
                   delete
-                </Button>
-              </Buttons>
-            </Item>
+                </CustomButton>
+              </Stack>
+            </Box>
           </Link>
         ))}
-      </Items>
-    </Wrapper>
+      </Stack>
+    </Stack>
   );
 };
 
 export default Home;
-
-const Wrapper = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-const Items = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-
-const Item = styled.h1`
-  padding: 40px;
-  background-color: #9090de;
-  border-radius: 5px;
-`;
-const Buttons = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-
-const Button = styled.div`
-  background-color: #3b3bb1;
-  border-radius: 5px;
-  padding: 10px;
-  font-size: 12px;
-  text-align: center;
-`;

@@ -1,12 +1,12 @@
 "use client";
 
 import { FC, useContext } from "react";
-import styled from "styled-components";
 import z from "zod";
 
 import TitleForm from "../../components/TitleForm";
 import TasksColumn from "../../components/TasksColumn";
 import { BoardContext, Status, statuses } from "../layout";
+import { Box } from "@mui/material";
 
 export interface Task {
   id: number;
@@ -34,8 +34,19 @@ const Board: FC<NextPageProps> = ({ params }) => {
   if (!board) return <h1>Board not found!</h1>;
 
   return (
-    <Wrapper>
-      <Title>board {boardNumber}</Title>
+    <Box
+      sx={{
+        background: "#ccc",
+        height: "100dvh",
+        width: "100%",
+        display: "flex",
+        gap: 2,
+        padding: 2,
+      }}
+    >
+      <Box component="h1" sx={{ color: "#3b3bb1" }}>
+        board {boardNumber}
+      </Box>
       <TitleForm handleSubmit={(value) => createTask(value, boardNumber)} />
       {statuses.map((status) => (
         <TasksColumn
@@ -45,20 +56,7 @@ const Board: FC<NextPageProps> = ({ params }) => {
           boardId={boardNumber}
         />
       ))}
-    </Wrapper>
+    </Box>
   );
 };
 export default Board;
-
-const Wrapper = styled.div`
-  background-color: #ccc;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-`;
-
-const Title = styled.h1`
-  color: #3b3bb1;
-`;

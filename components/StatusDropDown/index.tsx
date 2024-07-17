@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { MenuItem, Select } from "@mui/material";
 import { FC, useContext } from "react";
 
 import { Status, BoardContext } from "@/app/layout";
@@ -18,20 +18,24 @@ const StatusDropDown: FC<Select> = ({ status, id, boardId }) => {
     else changeStatus(id, value, boardId);
   };
   return (
-    <Wrapper value={status} onChange={(e: any) => handleChange(id, e)}>
-      <option value="todo">todo</option>
-      <option value="doing">doing</option>
-      <option value="done">done</option>
-      <option value="remove">remove</option>
-    </Wrapper>
+    <Select
+      sx={{
+        background: "#3b3bb1",
+        color: "#fff",
+        padding: 1,
+        borderRadius: 1,
+        height: 30,
+        width: 120,
+      }}
+      value={status}
+      onChange={(e: any) => handleChange(id, e)}
+    >
+      <MenuItem value="todo">todo</MenuItem>
+      <MenuItem value="doing">doing</MenuItem>
+      <MenuItem value="done">done</MenuItem>
+      <MenuItem value="remove">remove</MenuItem>
+    </Select>
   );
 };
 
 export default StatusDropDown;
-
-const Wrapper = styled.select`
-  background-color: #3b3bb1;
-  color: #fff;
-  padding: 5px;
-  border-radius: 5px;
-`;

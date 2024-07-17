@@ -1,11 +1,12 @@
+import { Input, Button } from "@mui/material";
 import { FC, useState } from "react";
 import styled from "styled-components";
 
-interface Input {
+interface InputProps {
   handleSubmit: (value: string) => void;
 }
 
-const TitleForm: FC<Input> = ({ handleSubmit }) => {
+const TitleForm: FC<InputProps> = ({ handleSubmit }) => {
   const [value, setValue] = useState("");
   return (
     <form
@@ -16,19 +17,30 @@ const TitleForm: FC<Input> = ({ handleSubmit }) => {
         setValue("");
       }}
     >
-      <InputStyle value={value} onChange={(e) => setValue(e.target.value)} />
-      <Button type="submit" value="add" disabled={!value} />
+      <Input
+        sx={{ height: 27, border: 1, "& input": { height: 27, padding: 0 } }}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <Button
+        sx={{
+          width: 50,
+          borderRadius: 5,
+          background: "#9090de",
+          color: "#000",
+          fontSize: 12,
+          border: 1,
+          borderColor: "#3B3BB1",
+        }}
+        type="submit"
+        disabled={!value}
+      >
+        add
+      </Button>
     </form>
   );
 };
 export default TitleForm;
-
-const Button = styled.input`
-  width: 50px;
-  border-radius: 5px;
-  font-size: 20px;
-  background-color: #9090de;
-`;
 
 const InputStyle = styled.input`
   border-radius: 5px;
