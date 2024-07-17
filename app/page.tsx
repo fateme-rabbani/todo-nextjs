@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FC, useContext } from "react";
 import Link from "next/link";
 
-import Input from "../components/Input";
+import Input from "../components/TitleForm";
 import { BoardContext } from "./layout";
 
 const Home: FC<NextPageProps> = () => {
@@ -15,21 +15,29 @@ const Home: FC<NextPageProps> = () => {
       <Input handleSubmit={(value) => createBoard(value)} />
       <Items>
         {boards.map((board, i) => (
-          <Item key={i}>
-            <Link href={`/${board.id}`}>
-              <span onClick={() => handleEditBoardTitle(board.id, board.des)}>
-                {board.des}
-              </span>
-            </Link>
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                removeBoard(board.id);
-              }}
-            >
-              delete
-            </Button>
-          </Item>
+          <Link key={i} href={`/${board.id}`}>
+            <Item>
+              <span>{board.des}</span>
+              <Buttons>
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleEditBoardTitle(board.id, board.des);
+                  }}
+                >
+                  edit
+                </Button>
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeBoard(board.id);
+                  }}
+                >
+                  delete
+                </Button>
+              </Buttons>
+            </Item>
+          </Link>
         ))}
       </Items>
     </Wrapper>
@@ -52,6 +60,11 @@ const Item = styled.h1`
   background-color: #9090de;
   border-radius: 5px;
 `;
+const Buttons = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
 const Button = styled.div`
   background-color: #3b3bb1;
   border-radius: 5px;

@@ -63,28 +63,31 @@ export default function RootLayout({
     []
   );
 
-  const createBoard = useCallback((des: string) => {
+  const createBoard = useCallback<BoardContext["createBoard"]>((des) => {
     setBoards((prevBoards) => [
       ...prevBoards,
       { id: makeId(), des, tasks: [] },
     ]);
   }, []);
 
-  const removeTask = useCallback((taskId: number, boardId: number) => {
-    setBoards((prevBoard) =>
-      prevBoard.map((board) =>
-        board.id === boardId
-          ? {
-              ...board,
-              tasks: board.tasks.filter((task) => task.id !== taskId),
-            }
-          : board
-      )
-    );
-  }, []);
+  const removeTask = useCallback<BoardContext["removeTask"]>(
+    (taskId, boardId) => {
+      setBoards((prevBoard) =>
+        prevBoard.map((board) =>
+          board.id === boardId
+            ? {
+                ...board,
+                tasks: board.tasks.filter((task) => task.id !== taskId),
+              }
+            : board
+        )
+      );
+    },
+    []
+  );
 
-  const changeStatus = useCallback(
-    (id: any, status: Status, boardId: number) => {
+  const changeStatus = useCallback<BoardContext["changeStatus"]>(
+    (id, status, boardId) => {
       setBoards((prevBoard) =>
         prevBoard.map((board) =>
           board.id !== boardId
@@ -101,12 +104,12 @@ export default function RootLayout({
     []
   );
 
-  const removeBoard = useCallback((id: number) => {
+  const removeBoard = useCallback<BoardContext["removeBoard"]>((id) => {
     setBoards((prevBoards) => prevBoards.filter((board) => board.id !== id));
   }, []);
 
-  const handleEditTaskTitle = useCallback(
-    (boardId: number, taskId: number, desc: string) => {
+  const handleEditTaskTitle = useCallback<BoardContext["handleEditTaskTitle"]>(
+    (boardId, taskId, desc) => {
       const newDes = prompt("Edit task description:", desc);
       if (newDes !== null) {
         setBoards((prevBoard) =>
@@ -126,7 +129,9 @@ export default function RootLayout({
     []
   );
 
-  const handleEditBoardTitle = useCallback((boardId: number, des: string) => {
+  const handleEditBoardTitle = useCallback<
+    BoardContext["handleEditBoardTitle"]
+  >((boardId, des) => {
     const newDes = prompt("Edit task description:", des);
     if (!newDes) return;
     setBoards((boards) =>

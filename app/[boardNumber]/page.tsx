@@ -4,8 +4,8 @@ import { FC, useContext } from "react";
 import styled from "styled-components";
 import z from "zod";
 
-import Input from "../../components/Input";
-import Column from "../../components/Column";
+import TitleForm from "../../components/TitleForm";
+import TasksColumn from "../../components/TasksColumn";
 import { BoardContext, Status, statuses } from "../layout";
 
 export interface Task {
@@ -36,9 +36,9 @@ const Board: FC<NextPageProps> = ({ params }) => {
   return (
     <Wrapper>
       <Title>board {boardNumber}</Title>
-      <Input handleSubmit={(value) => createTask(value, boardNumber)} />
+      <TitleForm handleSubmit={(value) => createTask(value, boardNumber)} />
       {statuses.map((status) => (
-        <Column
+        <TasksColumn
           key={status}
           status={status}
           tasks={board.tasks}

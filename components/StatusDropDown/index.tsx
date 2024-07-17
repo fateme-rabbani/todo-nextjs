@@ -8,7 +8,7 @@ interface Select {
   boardId: number;
 }
 
-const Select: FC<Select> = ({ status, id, boardId }) => {
+const StatusDropDown: FC<Select> = ({ status, id, boardId }) => {
   const { removeTask, changeStatus } = useContext(BoardContext);
 
   const handleChange = (id: number, e: any) => {
@@ -27,7 +27,7 @@ const Select: FC<Select> = ({ status, id, boardId }) => {
   );
 };
 
-export default Select;
+export default StatusDropDown;
 
 const Wrapper = styled.select`
   background-color: #3b3bb1;

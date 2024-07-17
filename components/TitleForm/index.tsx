@@ -5,7 +5,7 @@ interface Input {
   handleSubmit: (value: string) => void;
 }
 
-const Input: FC<Input> = ({ handleSubmit }) => {
+const TitleForm: FC<Input> = ({ handleSubmit }) => {
   const [value, setValue] = useState("");
   return (
     <form
@@ -21,7 +21,7 @@ const Input: FC<Input> = ({ handleSubmit }) => {
     </form>
   );
 };
-export default Input;
+export default TitleForm;
 
 const Button = styled.input`
   width: 50px;

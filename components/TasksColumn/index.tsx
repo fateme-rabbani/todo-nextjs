@@ -2,18 +2,18 @@ import styled from "styled-components";
 import { FC } from "react";
 
 import { TasksListProps } from "@/app/[boardNumber]/page";
-import Card from "../Card";
+import TaskCard from "../TaskCard";
 
 interface ColumnProps extends TasksListProps {}
 
-const Column: FC<ColumnProps> = ({ status, tasks, boardId }) => (
+const TasksColumn: FC<ColumnProps> = ({ status, tasks, boardId }) => (
   <Wrapper>
     <Title>{status}</Title>
-    <Card tasks={tasks} status={status} boardId={boardId} />
+    <TaskCard tasks={tasks} status={status} boardId={boardId} />
   </Wrapper>
 );
 
-export default Column;
+export default TasksColumn;
 
 const Wrapper = styled.div`
   background-color: #9090de;
