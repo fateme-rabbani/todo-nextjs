@@ -1,6 +1,5 @@
 import { Input, Button } from "@mui/material";
 import { FC, useState } from "react";
-import styled from "styled-components";
 
 interface InputProps {
   handleSubmit: (value: string) => void;
@@ -41,8 +40,3 @@ const TitleForm: FC<InputProps> = ({ handleSubmit }) => {
   );
 };
 export default TitleForm;
-
-const InputStyle = styled.input`
-  border-radius: 5px;
-  height: 27px;
-`;
