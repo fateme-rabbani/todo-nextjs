@@ -25,14 +25,14 @@ const Home: FC<NextPageProps> = () => {
       <Input handleSubmit={(value) => createBoard(value)} />
       <Stack direction="row" gap={1}>
         {boards.map((board, i) => (
-          <Link key={i} href={`/${board.id}`}>
+          <Link key={i} href={`/${board._id}`}>
             <Box sx={{ padding: 5, background: "#9090de", borderRadius: 1 }}>
               <Box component="h1">{board.des}</Box>
               <Stack direction="row" gap={1}>
                 <CustomButton
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    handleEditBoardTitle(board.id, board.des);
+                    handleEditBoardTitle(board._id, board.des);
                   }}
                 >
                   edit
@@ -40,7 +40,7 @@ const Home: FC<NextPageProps> = () => {
                 <CustomButton
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    removeBoard(board.id);
+                    removeBoard(board._id);
                   }}
                 >
                   delete

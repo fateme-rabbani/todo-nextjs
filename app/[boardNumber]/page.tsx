@@ -17,19 +17,19 @@ export interface Task {
 export interface TasksListProps {
   tasks: Task[];
   status: Status;
-  boardId: number;
+  boardId: string;
 }
 
-const paramsSchema = z.object({
-  boardNumber: z.coerce.number(),
-});
+type ParamsType = {
+  params: { boardNumber: string };
+};
 
-const Board: FC<NextPageProps> = ({ params }) => {
-  const { boardNumber } = paramsSchema.parse(params);
+const Board: FC<ParamsType> = (props) => {
+  const { boardNumber } = props.params;
 
   const { boards, createTask } = useContext(BoardContext);
 
-  const board = boards.find((board) => board.id === boardNumber);
+  const board = boards.find((board) => board._id === boardNumber);
 
   if (!board) return <h1>Board not found!</h1>;
 
@@ -45,7 +45,7 @@ const Board: FC<NextPageProps> = ({ params }) => {
       }}
     >
       <Box component="h1" sx={{ color: "#3b3bb1" }}>
-        board {boardNumber}
+        board
       </Box>
       <TitleForm handleSubmit={(value) => createTask(value, boardNumber)} />
       {statuses.map((status) => (

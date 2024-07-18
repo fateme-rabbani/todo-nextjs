@@ -5,7 +5,7 @@ import { Status, BoardContext } from "@/app/layout";
 interface Select {
   status: Status;
   id: number;
-  boardId: number;
+  boardId: string;
 }
 
 const StatusDropDown: FC<Select> = ({ status, id, boardId }) => {
