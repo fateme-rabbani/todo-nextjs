@@ -9,10 +9,12 @@ async function connectDB() {
   if (mongoose.connections[0].readyState) return;
   mongoose.set("strictQuery", false);
 
-  const env = envSchema.parse(process.env);
+  const env = envSchema.parse({
+    MONGO_URI: process.env.MONGO_URI,
+  });
 
   await mongoose.connect(env.MONGO_URI);
-  console.log("Connected to DB");
+  console.log("wlkejfwlekjf");
 }
 
 export default connectDB;

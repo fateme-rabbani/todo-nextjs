@@ -1,7 +1,8 @@
 import { MenuItem, Select } from "@mui/material";
-import { FC, useContext } from "react";
+import { FC } from "react";
 
-import { Status, BoardContext } from "@/app/layout";
+import useBoards, { Status } from "@/contexts/board";
+
 interface Select {
   status: Status;
   id: number;
@@ -9,7 +10,7 @@ interface Select {
 }
 
 const StatusDropDown: FC<Select> = ({ status, id, boardId }) => {
-  const { removeTask, changeStatus } = useContext(BoardContext);
+  const { removeTask, changeStatus } = useBoards();
 
   const handleChange = (id: number, e: any) => {
     const value = e.target.value;

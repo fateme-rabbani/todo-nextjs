@@ -1,12 +1,11 @@
 "use client";
 
-import { FC, useContext } from "react";
-import z from "zod";
+import { FC } from "react";
 
 import TitleForm from "../../components/TitleForm";
 import TasksColumn from "../../components/TasksColumn";
-import { BoardContext, Status, statuses } from "../layout";
 import { Box } from "@mui/material";
+import useBoards, { Status, statuses } from "@/contexts/board";
 
 export interface Task {
   id: number;
@@ -27,7 +26,7 @@ type ParamsType = {
 const Board: FC<ParamsType> = (props) => {
   const { boardNumber } = props.params;
 
-  const { boards, createTask } = useContext(BoardContext);
+  const { boards, createTask } = useBoards();
 
   const board = boards.find((board) => board._id === boardNumber);
 

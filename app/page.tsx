@@ -1,50 +1,62 @@
-"use client";
 import { Box, Button, Stack, styled } from "@mui/material";
-import { FC, useContext } from "react";
+import { FC } from "react";
 import Link from "next/link";
 
 import Input from "../components/TitleForm";
-import { BoardContext } from "./layout";
+import useBoards from "@/contexts/board";
+import connectDB from "@/utils/connectDB";
+import Board from "@/models/Board";
 
-export const CustomButton = styled(Button)({
-  color: "#fff",
-  background: "#3b3bb1",
-  padding: 10,
-  textAlign: "center",
-  fontSize: 12,
-  border: "2px solid #3B3BB1",
-  borderRadius: 10,
-});
+export default async function Page() {
+  // const { boards, createBoard, removeBoard, handleEditBoardTitle } =
+  //   useBoards();
 
-const Home: FC<NextPageProps> = () => {
-  const { boards, createBoard, removeBoard, handleEditBoardTitle } =
-    useContext(BoardContext);
+  await connectDB();
+  const boards = await Board.find();
 
   return (
     <Stack direction="row" gap={1}>
-      <Input handleSubmit={(value) => createBoard(value)} />
+      {/* <Input handleSubmit={(value) => createBoard(value)} /> */}
       <Stack direction="row" gap={1}>
         {boards.map((board, i) => (
           <Link key={i} href={`/${board._id}`}>
             <Box sx={{ padding: 5, background: "#9090de", borderRadius: 1 }}>
               <Box component="h1">{board.des}</Box>
               <Stack direction="row" gap={1}>
-                <CustomButton
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    handleEditBoardTitle(board._id, board.des);
+                <Button
+                  sx={{
+                    color: "#fff",
+                    background: "#3b3bb1",
+                    padding: 10,
+                    textAlign: "center",
+                    fontSize: 12,
+                    border: "2px solid #3B3BB1",
+                    borderRadius: 10,
                   }}
+                  // onClick={(e: any) => {
+                  //   e.stopPropagation();
+                  //   handleEditBoardTitle(board._id, board.des);
+                  // }}
                 >
                   edit
-                </CustomButton>
-                <CustomButton
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    removeBoard(board._id);
+                </Button>
+                <Button
+                  sx={{
+                    color: "#fff",
+                    background: "#3b3bb1",
+                    padding: 10,
+                    textAlign: "center",
+                    fontSize: 12,
+                    border: "2px solid #3B3BB1",
+                    borderRadius: 10,
                   }}
+                  // onClick={(e: any) => {
+                  //   e.stopPropagation();
+                  //   removeBoard(board._id);
+                  // }}
                 >
                   delete
-                </CustomButton>
+                </Button>
               </Stack>
             </Box>
           </Link>
@@ -52,6 +64,4 @@ const Home: FC<NextPageProps> = () => {
       </Stack>
     </Stack>
   );
-};
-
-export default Home;
+}

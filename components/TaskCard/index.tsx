@@ -1,12 +1,12 @@
 import { Box } from "@mui/material";
-import { FC, useContext } from "react";
+import { FC } from "react";
 
 import { TasksListProps } from "@/app/[boardNumber]/page";
 import StatusDropDown from "../StatusDropDown";
-import { BoardContext } from "@/app/layout";
+import useBoards from "@/contexts/board";
 
 export const TaskCard: FC<TasksListProps> = ({ tasks, status, boardId }) => {
-  const { handleEditTaskTitle } = useContext(BoardContext);
+  const { handleEditTaskTitle } = useBoards();
 
   return tasks
     ?.filter((task) => task.status === status)
