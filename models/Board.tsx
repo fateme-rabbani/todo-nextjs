@@ -1,11 +1,15 @@
-import { Schema, model, models } from "mongoose";
+import { Types, Schema, model, models } from "mongoose";
+
+function generateObjectId() {
+  return new Types.ObjectId();
+}
 
 const boardSchema = new Schema({
   _id: { type: Schema.Types.ObjectId, auto: true },
   des: String,
   tasks: [
     {
-      _id: { type: Schema.Types.ObjectId, auto: true },
+      _id: { type: Schema.Types.ObjectId, default: generateObjectId },
       status: String,
       taskDes: String,
     },

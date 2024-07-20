@@ -1,16 +1,13 @@
-import { Box, Button, Stack, styled } from "@mui/material";
-import { FC } from "react";
+import { Box, Button, Stack } from "@mui/material";
 import Link from "next/link";
 
 import Input from "../components/TitleForm";
-import useBoards from "@/contexts/board";
 import connectDB from "@/utils/connectDB";
 import Board from "@/models/Board";
+import { EditButton } from "./gholam";
+import { revalidatePath } from "next/cache";
 
 export default async function Page() {
-  // const { boards, createBoard, removeBoard, handleEditBoardTitle } =
-  //   useBoards();
-
   await connectDB();
   const boards = await Board.find();
 
@@ -18,28 +15,31 @@ export default async function Page() {
     <Stack direction="row" gap={1}>
       {/* <Input handleSubmit={(value) => createBoard(value)} /> */}
       <Stack direction="row" gap={1}>
-        {boards.map((board, i) => (
-          <Link key={i} href={`/${board._id}`}>
-            <Box sx={{ padding: 5, background: "#9090de", borderRadius: 1 }}>
+        {boards.map((board, i) => {
+          async function boardEdit(newDes: string) {
+            "use server";
+            await connectDB();
+
+            // edit:
+            const b = await Board.findOne({ _id: board._id });
+            b.des = newDes;
+            b.save();
+
+            // delete:
+            // await Board.deleteOne({ _id: board._id });
+
+            revalidatePath("/");
+          }
+
+          return (
+            // <Link key={i} href={`/${board._id}`}>
+            <Box
+              key={i}
+              sx={{ padding: 5, background: "#9090de", borderRadius: 1 }}
+            >
               <Box component="h1">{board.des}</Box>
               <Stack direction="row" gap={1}>
-                <Button
-                  sx={{
-                    color: "#fff",
-                    background: "#3b3bb1",
-                    padding: 10,
-                    textAlign: "center",
-                    fontSize: 12,
-                    border: "2px solid #3B3BB1",
-                    borderRadius: 10,
-                  }}
-                  // onClick={(e: any) => {
-                  //   e.stopPropagation();
-                  //   handleEditBoardTitle(board._id, board.des);
-                  // }}
-                >
-                  edit
-                </Button>
+                <EditButton onRequestBoardEdit={boardEdit} />
                 <Button
                   sx={{
                     color: "#fff",
@@ -59,8 +59,9 @@ export default async function Page() {
                 </Button>
               </Stack>
             </Box>
-          </Link>
-        ))}
+            // </Link>
+          );
+        })}
       </Stack>
     </Stack>
   );
