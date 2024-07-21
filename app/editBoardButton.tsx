@@ -24,7 +24,6 @@ export const EditButton: FC<EditButtonProps> = ({ onRequestBoardEdit }) => (
       const newDes = prompt("new name:");
       if (!newDes) return;
       await onRequestBoardEdit(newDes);
-      console.log("done");
     }}
   >
     edit

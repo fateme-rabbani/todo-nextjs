@@ -14,7 +14,6 @@ async function connectDB() {
   });
 
   await mongoose.connect(env.MONGO_URI);
-  console.log("wlkejfwlekjf");
 }
 
 export default connectDB;

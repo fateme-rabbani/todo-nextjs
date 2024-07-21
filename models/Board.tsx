@@ -21,6 +21,7 @@ const boardSchema = new Schema({
   },
 });
 
-const Board = models.Board || model("Board", boardSchema);
-
+const getBoardModel = () => model("Board", boardSchema);
+const Board =
+  (models.Board as ReturnType<typeof getBoardModel>) || getBoardModel();
 export default Board;

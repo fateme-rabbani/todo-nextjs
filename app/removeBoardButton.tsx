@@ -23,7 +23,7 @@ export const RemoveButton: FC<RemoveButtonProps> = ({
     }}
     onClick={async (e) => {
       e.stopPropagation();
-
+      if (!confirm("are you sure?")) return;
       await onRequestBoardRemove();
     }}
   >

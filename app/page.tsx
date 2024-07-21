@@ -5,13 +5,14 @@ import { revalidatePath } from "next/cache";
 
 import connectDB from "@/utils/connectDB";
 import Board from "@/models/Board";
-import Input from "../components/TitleForm";
+import Input from "@/components/TitleForm";
+import toPlainObj from "@/utils/toPlainObj";
 import { EditButton } from "./editBoardButton";
 import { RemoveButton } from "./removeBoardButton";
 
 export default async function Page() {
   await connectDB();
-  const boards = await Board.find();
+  const boards = toPlainObj(await Board.find({}).lean());
 
   return (
     <Stack direction="row" gap={1}>
@@ -19,34 +20,29 @@ export default async function Page() {
         handleSubmit={async (des) => {
           "use server";
           await connectDB();
-
-          await Board.create({
-            des,
-            tasks: [],
-          });
+          await Board.create({ des, tasks: [] });
           revalidatePath("/");
         }}
       />
       <Stack direction="row" gap={1}>
         {boards.map((board, i) => {
-          async function boardEdit(newDes: string) {
+          async function handleBoardEdit(newDes: string) {
             "use server";
             await connectDB();
-
             const b = await Board.findOne({ _id: board._id });
+            if (!b) return;
             b.des = newDes;
             b.save();
-
             revalidatePath("/");
           }
-          async function boardRemove() {
+
+          async function handleBoardRemove() {
             "use server";
             await connectDB();
-
             await Board.deleteOne({ _id: board._id });
-
             revalidatePath("/");
           }
+
           return (
             <Card
               key={i}
@@ -58,8 +54,8 @@ export default async function Page() {
                 </Box>
               </Link>
               <Stack direction="row" justifyContent="space-between" gap={1}>
-                <EditButton onRequestBoardEdit={boardEdit} />
-                <RemoveButton onRequestBoardRemove={boardRemove} />
+                <EditButton onRequestBoardEdit={handleBoardEdit} />
+                <RemoveButton onRequestBoardRemove={handleBoardRemove} />
               </Stack>
             </Card>
           );
