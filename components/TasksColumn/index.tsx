@@ -1,12 +1,11 @@
 import { Box } from "@mui/material";
+
 import { FC } from "react";
 
-import { TasksListProps } from "@/app/[boardNumber]/page";
+import { TasksListProps } from "@/app/[boardId]/page";
 import TaskCard from "../TaskCard";
 
-interface ColumnProps extends TasksListProps {}
-
-const TasksColumn: FC<ColumnProps> = ({ status, tasks, boardId }) => (
+const TasksColumn: FC<TasksListProps> = ({ status, tasks, boardId }) => (
   <Box
     sx={{
       background: "#9090de",

@@ -1,36 +1,44 @@
 import { Box } from "@mui/material";
-import { FC } from "react";
 
-import { TasksListProps } from "@/app/[boardNumber]/page";
+import { FC } from "react";
+import { revalidatePath } from "next/cache";
+
+import connectDB from "@/utils/connectDB";
+import { TasksListProps } from "@/app/[boardId]/page";
+import Board from "@/models/Board";
 import StatusDropDown from "../StatusDropDown";
-import useBoards from "@/contexts/board";
+import { Title } from "./taskTitle";
 
 export const TaskCard: FC<TasksListProps> = ({ tasks, status, boardId }) => {
-  const { handleEditTaskTitle } = useBoards();
-
   return tasks
     ?.filter((task) => task.status === status)
-    .map((task, i) => (
-      <Box
-        sx={{
-          background: "#5f5fc2",
-          padding: 1,
-          borderRadius: 1,
-          display: "flex",
-          flexDirection: "column",
-          gap: 1,
-        }}
-        key={i}
-      >
+    .map((task, i) => {
+      async function taskEdit(newDes: string) {
+        "use server";
+        await connectDB();
+
+        await Board.updateOne(
+          { "tasks._id": task.id },
+          { $set: { "tasks.$.taskDes": newDes } }
+        );
+        revalidatePath(`/${boardId}`);
+      }
+      return (
         <Box
-          component="h3"
-          sx={{ color: "#fff" }}
-          onClick={() => handleEditTaskTitle(boardId, task.id, task.taskDes)}
+          sx={{
+            background: "#5f5fc2",
+            padding: 1,
+            borderRadius: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+          }}
+          key={i}
         >
-          {task.taskDes}
+          <Title des={task.taskDes} taskEdit={taskEdit} />
+          <StatusDropDown status={task.status} id={task.id} boardId={boardId} />
         </Box>
-        <StatusDropDown status={task.status} id={task.id} boardId={boardId} />
-      </Box>
-    ));
+      );
+    });
 };
 export default TaskCard;

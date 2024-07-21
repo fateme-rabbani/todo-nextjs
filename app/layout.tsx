@@ -4,23 +4,27 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-import { BoardProvider } from "@/contexts/board";
-import connectDB from "@/utils/connectDB";
-import Board from "@/models/Board";
+export const statuses = ["todo", "doing", "done"] as const;
+export type Status = (typeof statuses)[number];
+export interface Task {
+  id: number;
+  taskDes: string;
+  status: Status;
+}
 
+export interface Board {
+  _id: string;
+  des: string;
+  tasks: Task[];
+}
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // await connectDB();
-  // const boards = await Board.find();
-
   return (
     <html lang="en">
-      {/* <BoardProvider {...{ boards }}> */}
       <body className={inter.className}>{children}</body>
-      {/* </BoardProvider> */}
     </html>
   );
 }

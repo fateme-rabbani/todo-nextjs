@@ -1,4 +1,6 @@
+"use client";
 import { Input, Button } from "@mui/material";
+
 import { FC, useState } from "react";
 
 interface InputProps {

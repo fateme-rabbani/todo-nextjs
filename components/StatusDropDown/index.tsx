@@ -1,7 +1,10 @@
-import { MenuItem, Select } from "@mui/material";
 import { FC } from "react";
+import { revalidatePath } from "next/cache";
 
-import useBoards, { Status } from "@/contexts/board";
+import connectDB from "@/utils/connectDB";
+import { Status } from "@/app/layout";
+import Board from "@/models/Board";
+import { DropDown } from "./dropDown";
 
 interface Select {
   status: Status;
@@ -10,33 +13,25 @@ interface Select {
 }
 
 const StatusDropDown: FC<Select> = ({ status, id, boardId }) => {
-  const { removeTask, changeStatus } = useBoards();
+  async function taskStatus(value: string) {
+    "use server";
+    await connectDB();
 
-  const handleChange = (id: number, e: any) => {
-    const value = e.target.value;
-
-    if (value === "remove") removeTask(id, boardId);
-    else changeStatus(id, value, boardId);
-  };
-  return (
-    <Select
-      sx={{
-        background: "#3b3bb1",
-        color: "#fff",
-        padding: 1,
-        borderRadius: 1,
-        height: 30,
-        width: 120,
-      }}
-      value={status}
-      onChange={(e: any) => handleChange(id, e)}
-    >
-      <MenuItem value="todo">todo</MenuItem>
-      <MenuItem value="doing">doing</MenuItem>
-      <MenuItem value="done">done</MenuItem>
-      <MenuItem value="remove">remove</MenuItem>
-    </Select>
-  );
+    if (value === "remove") {
+      await Board.updateOne(
+        { _id: boardId },
+        { $pull: { tasks: { _id: id } } }
+      );
+      revalidatePath(`/${boardId}`);
+    } else {
+      await Board.updateOne(
+        { "tasks._id": id },
+        { $set: { "tasks.$.status": value } }
+      );
+      revalidatePath(`/${boardId}`);
+    }
+  }
+  return <DropDown taskStatus={taskStatus} status={status} />;
 };
 
 export default StatusDropDown;
