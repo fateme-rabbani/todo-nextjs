@@ -6,12 +6,17 @@ function generateObjectId() {
 
 const boardSchema = new Schema({
   _id: { type: Schema.Types.ObjectId, auto: true },
-  des: String,
-  tasks: [
+  name: String,
+  columns: [
     {
       _id: { type: Schema.Types.ObjectId, default: generateObjectId },
-      status: String,
-      taskDes: String,
+      name: String,
+      tasks: [
+        {
+          _id: { type: Schema.Types.ObjectId, default: generateObjectId },
+          taskDes: String,
+        },
+      ],
     },
   ],
   createdAt: {
