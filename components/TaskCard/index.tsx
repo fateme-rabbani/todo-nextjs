@@ -4,41 +4,64 @@ import { FC } from "react";
 import { revalidatePath } from "next/cache";
 
 import connectDB from "@/utils/connectDB";
-import { TasksListProps } from "@/app/[boardId]/page";
+
 import Board from "@/models/Board";
 import StatusDropDown from "../StatusDropDown";
 import { Title } from "./taskTitle";
+import { Column, Task } from "@/app/layout";
 
-export const TaskCard: FC<TasksListProps> = ({ tasks, status, boardId }) => {
-  return tasks
-    ?.filter((task) => task.status === status)
-    .map((task, i) => {
-      async function taskEdit(newDes: string) {
-        "use server";
-        await connectDB();
+export interface TaskCardProps {
+  tasks: Task[];
+  boardId: string;
+  columnId: string;
+  columns: Column[];
+}
 
-        await Board.updateOne(
-          { "tasks._id": task.id },
-          { $set: { "tasks.$.taskDes": newDes } }
-        );
-        revalidatePath(`/${boardId}`);
-      }
-      return (
-        <Box
-          sx={{
-            background: "#5f5fc2",
-            padding: 1,
-            borderRadius: 1,
-            display: "flex",
-            flexDirection: "column",
-            gap: 1,
-          }}
-          key={i}
-        >
-          <Title des={task.taskDes} taskEdit={taskEdit} />
-          <StatusDropDown status={task.status} id={task.id} boardId={boardId} />
-        </Box>
+export const TaskCard: FC<TaskCardProps> = ({
+  tasks,
+  columnId,
+  boardId,
+  columns,
+}) => {
+  return tasks.map((task, i) => {
+    async function taskEdit(newDes: string) {
+      "use server";
+      await connectDB();
+      await Board.updateOne(
+        { "columns._id": columnId, "columns.tasks._id": task._id },
+        {
+          $set: {
+            "columns.$[col].tasks.$[task].taskDes": newDes,
+          },
+        },
+        {
+          arrayFilters: [{ "col._id": columnId }, { "task._id": task._id }],
+        }
       );
-    });
+      revalidatePath(`/${boardId}`);
+    }
+    return (
+      <Box
+        sx={{
+          background: "#5f5fc2",
+          padding: 1,
+          borderRadius: 1,
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+        }}
+        key={i}
+      >
+        <Title des={task.taskDes || ""} taskEdit={taskEdit} />
+        <StatusDropDown
+          columnId={columnId}
+          id={task._id.toString()}
+          boardId={boardId}
+          columns={columns}
+          taskDes={task.taskDes || ""}
+        />
+      </Box>
+    );
+  });
 };
 export default TaskCard;

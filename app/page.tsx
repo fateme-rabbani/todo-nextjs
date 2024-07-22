@@ -4,6 +4,7 @@ import Link from "next/link";
 import { revalidatePath } from "next/cache";
 
 import connectDB from "@/utils/connectDB";
+
 import Board from "@/models/Board";
 import Input from "@/components/TitleForm";
 import toPlainObj from "@/utils/toPlainObj";
@@ -17,21 +18,28 @@ export default async function Page() {
   return (
     <Stack direction="row" gap={1}>
       <Input
-        handleSubmit={async (des) => {
+        handleSubmit={async (name) => {
           "use server";
           await connectDB();
-          await Board.create({ des, tasks: [] });
+          await Board.create({
+            name,
+            columns: [
+              { name: "todo", tasks: [] },
+              { name: "doing", tasks: [] },
+              { name: "done", tasks: [] },
+            ],
+          });
           revalidatePath("/");
         }}
       />
       <Stack direction="row" gap={1}>
         {boards.map((board, i) => {
-          async function handleBoardEdit(newDes: string) {
+          async function handleBoardEdit(newName: string) {
             "use server";
             await connectDB();
             const b = await Board.findOne({ _id: board._id });
             if (!b) return;
-            b.des = newDes;
+            b.name = newName;
             b.save();
             revalidatePath("/");
           }
@@ -50,7 +58,7 @@ export default async function Page() {
             >
               <Link key={i} href={`/${board._id}`}>
                 <Box component="h1" sx={{ padding: 1, textAlign: "center" }}>
-                  {board.des}
+                  {board.name}
                 </Box>
               </Link>
               <Stack direction="row" justifyContent="space-between" gap={1}>

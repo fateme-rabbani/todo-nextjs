@@ -1,5 +1,5 @@
 "use client";
-import { Input, Button } from "@mui/material";
+import { Input, Button, Box } from "@mui/material";
 
 import { FC, useState } from "react";
 
@@ -10,7 +10,9 @@ interface InputProps {
 const TitleForm: FC<InputProps> = ({ handleSubmit }) => {
   const [value, setValue] = useState("");
   return (
-    <form
+    <Box
+      component="form"
+      sx={{ display: "flex", gap: 1, alignItems: "center" }}
       onSubmit={(e) => {
         e.preventDefault();
         if (!value) return;
@@ -19,7 +21,12 @@ const TitleForm: FC<InputProps> = ({ handleSubmit }) => {
       }}
     >
       <Input
-        sx={{ height: 27, border: 1, "& input": { height: 27, padding: 0 } }}
+        sx={{
+          minWidth: 150,
+          height: 27,
+          border: 1,
+          "& input": { height: 27, padding: 0 },
+        }}
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
@@ -38,7 +45,7 @@ const TitleForm: FC<InputProps> = ({ handleSubmit }) => {
       >
         add
       </Button>
-    </form>
+    </Box>
   );
 };
 export default TitleForm;

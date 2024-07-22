@@ -2,23 +2,19 @@ import { Box } from "@mui/material";
 
 import { FC } from "react";
 import { revalidatePath } from "next/cache";
+import { Types } from "mongoose";
 
 import connectDB from "@/utils/connectDB";
 import Board from "@/models/Board";
-import { Status, statuses } from "../layout";
+import { Column, Task } from "../layout";
 import TitleForm from "../../components/TitleForm";
 import TasksColumn from "../../components/TasksColumn";
-
-export interface Task {
-  id: number;
-  taskDes: string;
-  status: Status;
-}
-
 export interface TasksListProps {
   tasks: Task[];
-  status: Status;
+  name: string;
   boardId: string;
+  columnId: string;
+  columns: Column[];
 }
 
 type ParamsType = {
@@ -45,28 +41,34 @@ const BoardPage: FC<ParamsType> = async (props) => {
         padding: 2,
       }}
     >
-      <Box component="h1" sx={{ color: "#3b3bb1" }}>
-        board
+      <Box>
+        <Box component="h1" sx={{ color: "#3b3bb1" }}>
+          board
+        </Box>
+        <TitleForm
+          handleSubmit={async (name) => {
+            "use server";
+            await connectDB();
+
+            const board = await Board.findOne({ _id: boardId });
+            if (!board) return;
+
+            board.columns.push({ _id: new Types.ObjectId(), name, tasks: [] });
+            board.save();
+
+            revalidatePath(`/${boardId}`);
+          }}
+        />
       </Box>
-      <TitleForm
-        handleSubmit={async (taskDes) => {
-          "use server";
-          await connectDB();
 
-          const board = await Board.findOne({ _id: boardId });
-
-          board.tasks.push({ taskDes, status: "todo" });
-          board.save();
-
-          revalidatePath(`/${boardId}`);
-        }}
-      />
-      {statuses.map((status) => (
+      {board.columns.map((col) => (
         <TasksColumn
-          key={status}
-          status={status}
-          tasks={board.tasks}
+          key={col._id.toString()}
+          columnId={col._id.toString()}
+          name={col.name || ""}
+          tasks={col.tasks as Task[]}
           boardId={boardId}
+          columns={board.columns as Column[]}
         />
       ))}
     </Box>

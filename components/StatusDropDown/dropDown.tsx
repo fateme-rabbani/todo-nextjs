@@ -1,14 +1,22 @@
 "use client";
-import { Status } from "@/app/layout";
 import { MenuItem, Select } from "@mui/material";
+
 import { FC } from "react";
+
+import { Column } from "@/app/layout";
 
 interface DropDownProps {
   taskStatus(value: string): void;
-  status: Status;
+  columnId: string;
+  columns: Column[];
 }
 
-export const DropDown: FC<DropDownProps> = ({ taskStatus, status }) => {
+export const DropDown: FC<DropDownProps> = ({
+  taskStatus,
+  columnId,
+  columns,
+}) => {
+  // const value = columns.find((col) => col._id === columnId).name;
   return (
     <Select
       sx={{
@@ -19,15 +27,17 @@ export const DropDown: FC<DropDownProps> = ({ taskStatus, status }) => {
         height: 30,
         width: 120,
       }}
-      value={status}
+      // value={value}
       onChange={async (e: any) => {
         const value = e.target.value;
         taskStatus(value);
       }}
     >
-      <MenuItem value="todo">todo</MenuItem>
-      <MenuItem value="doing">doing</MenuItem>
-      <MenuItem value="done">done</MenuItem>
+      {columns.map((col) => (
+        <MenuItem key={col._id.toString()} value={col._id.toString()}>
+          {col.name}
+        </MenuItem>
+      ))}
       <MenuItem value="remove">remove</MenuItem>
     </Select>
   );

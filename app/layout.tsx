@@ -2,20 +2,23 @@ import { Inter } from "next/font/google";
 
 import "./globals.css";
 
+import { Types } from "mongoose";
+
 const inter = Inter({ subsets: ["latin"] });
 
-export const statuses = ["todo", "doing", "done"] as const;
-export type Status = (typeof statuses)[number];
 export interface Task {
-  id: number;
+  _id: Types.ObjectId;
   taskDes: string;
-  status: Status;
 }
-
-export interface Board {
-  _id: string;
-  des: string;
+export interface Column {
+  _id: Types.ObjectId;
+  name: string;
   tasks: Task[];
+}
+export interface Board {
+  _id: Types.ObjectId;
+  name: string;
+  columns: Column[];
 }
 export default async function RootLayout({
   children,
