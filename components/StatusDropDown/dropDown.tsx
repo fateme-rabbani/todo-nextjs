@@ -16,7 +16,8 @@ export const DropDown: FC<DropDownProps> = ({
   columnId,
   columns,
 }) => {
-  // const value = columns.find((col) => col._id === columnId).name;
+  const value = columns.find((col) => col._id.toString() === columnId)?._id;
+
   return (
     <Select
       sx={{
@@ -27,7 +28,7 @@ export const DropDown: FC<DropDownProps> = ({
         height: 30,
         width: 120,
       }}
-      // value={value}
+      value={value}
       onChange={async (e: any) => {
         const value = e.target.value;
         taskStatus(value);
