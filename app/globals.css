@@ -4,8 +4,8 @@
   margin: 0;
 }
 
-body {
-  min-height: 100dvh;
+html {
+  background-color: #ccc;
 }
 
 a {

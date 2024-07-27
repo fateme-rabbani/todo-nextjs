@@ -9,6 +9,7 @@ import Board from "@/models/Board";
 import { Column, Task } from "../layout";
 import TitleForm from "../../components/TitleForm";
 import TasksColumn from "../../components/TasksColumn";
+
 export interface TasksListProps {
   tasks: Task[];
   name: string;
@@ -33,9 +34,6 @@ const BoardPage: FC<ParamsType> = async (props) => {
   return (
     <Box
       sx={{
-        background: "#ccc",
-        height: "100dvh",
-        width: "100%",
         display: "flex",
         gap: 2,
         padding: 2,
