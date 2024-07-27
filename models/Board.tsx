@@ -10,11 +10,11 @@ const boardSchema = new Schema({
   columns: [
     {
       _id: { type: Schema.Types.ObjectId, default: generateObjectId },
-      name: String,
+      name: { type: String, required: true },
       tasks: [
         {
           _id: { type: Schema.Types.ObjectId, default: generateObjectId },
-          taskDes: String,
+          taskDes: { type: String, required: true },
         },
       ],
     },

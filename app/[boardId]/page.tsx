@@ -1,35 +1,24 @@
-import { Box } from "@mui/material";
-
 import { FC } from "react";
+import { Box } from "@mui/material";
 import { revalidatePath } from "next/cache";
 import { Types } from "mongoose";
+import z from "zod";
 
 import connectDB from "@/utils/connectDB";
 import Board from "@/models/Board";
-import { Column, Task } from "../layout";
 import TitleForm from "../../components/TitleForm";
 import TasksColumn from "../../components/TasksColumn";
+import { notFound } from "next/navigation";
 
-export interface TasksListProps {
-  tasks: Task[];
-  name: string;
-  boardId: string;
-  columnId: string;
-  columns: Column[];
-}
+export const paramsSchema = z.object({ boardId: z.string().length(24) });
 
-type ParamsType = {
-  params: { boardId: string };
-};
+const BoardPage: FC<NextPageProps> = async (props) => {
+  const { boardId } = paramsSchema.parse(props.params);
 
-const BoardPage: FC<ParamsType> = async (props) => {
-  const { boardId } = props.params;
   await connectDB();
-  const boards = await Board.find();
+  const board = await Board.findOne({ _id: boardId });
 
-  const board = boards.find((board) => board._id.toString() === boardId);
-
-  if (!board) return <h1>Board not found!</h1>;
+  if (!board) notFound();
 
   return (
     <Box
@@ -64,9 +53,9 @@ const BoardPage: FC<ParamsType> = async (props) => {
           key={col._id.toString()}
           columnId={col._id.toString()}
           name={col.name || ""}
-          tasks={col.tasks as Task[]}
+          tasks={col.tasks}
           boardId={boardId}
-          columns={board.columns as Column[]}
+          columns={board.columns}
         />
       ))}
     </Box>

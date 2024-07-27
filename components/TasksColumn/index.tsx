@@ -4,11 +4,35 @@ import { FC } from "react";
 import { Types } from "mongoose";
 import { revalidatePath } from "next/cache";
 
-import { TasksListProps } from "@/app/[boardId]/page";
 import TaskCard from "../TaskCard";
 import TitleForm from "../TitleForm";
 import Board from "@/models/Board";
 import connectDB from "@/utils/connectDB";
+
+export interface Task {
+  _id: Types.ObjectId;
+  taskDes: string;
+}
+
+export interface Column {
+  _id: Types.ObjectId;
+  name: string;
+  tasks: Task[];
+}
+
+export interface Board {
+  _id: Types.ObjectId;
+  name: string;
+  columns: Column[];
+}
+
+export interface TasksListProps {
+  tasks: Task[];
+  name: string;
+  boardId: string;
+  columnId: string;
+  columns: Column[];
+}
 
 const TasksColumn: FC<TasksListProps> = ({
   columnId,
@@ -74,5 +98,4 @@ const TasksColumn: FC<TasksListProps> = ({
     />
   </Box>
 );
-
 export default TasksColumn;
