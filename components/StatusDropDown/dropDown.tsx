@@ -1,5 +1,4 @@
 "use client";
-import { MenuItem, Select } from "@mui/material";
 
 import { FC } from "react";
 
@@ -16,18 +15,12 @@ export const DropDown: FC<DropDownProps> = ({
   columnId,
   columns,
 }) => {
-  const value = columns.find((col) => col._id.toString() === columnId)?._id;
-
+  const value = columns
+    .find((col) => col._id.toString() === columnId)
+    ?._id.toString();
   return (
-    <Select
-      sx={{
-        background: "#3b3bb1",
-        color: "#fff",
-        padding: 1,
-        borderRadius: 1,
-        height: 30,
-        width: 120,
-      }}
+    <select
+      className="bg-[#3b3bb1] text-[#fff] p-1 rounded"
       value={value}
       onChange={async (e: any) => {
         const value = e.target.value;
@@ -35,11 +28,11 @@ export const DropDown: FC<DropDownProps> = ({
       }}
     >
       {columns.map((col) => (
-        <MenuItem key={col._id.toString()} value={col._id.toString()}>
+        <option key={col._id.toString()} value={col._id.toString()}>
           {col.name}
-        </MenuItem>
+        </option>
       ))}
-      <MenuItem value="remove">remove</MenuItem>
-    </Select>
+      <option value="remove">remove</option>
+    </select>
   );
 };

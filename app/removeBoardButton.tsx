@@ -1,7 +1,5 @@
 "use client";
 
-import { Button } from "@mui/material";
-
 import { FC } from "react";
 
 export interface RemoveButtonProps {
@@ -11,16 +9,8 @@ export interface RemoveButtonProps {
 export const RemoveButton: FC<RemoveButtonProps> = ({
   onRequestBoardRemove,
 }) => (
-  <Button
-    sx={{
-      color: "#fff",
-      background: "#3b3bb1",
-      padding: 1,
-      textAlign: "center",
-      fontSize: 12,
-      border: "2px solid #3B3BB1",
-      borderRadius: 2,
-    }}
+  <button
+    className="border border-[#000] bg-[#3b3bb1] text-[14px] text-[#fff] p-3 text-center rounded-md hover:bg-[#9090DE] transition-all duration-300"
     onClick={async (e) => {
       e.stopPropagation();
       if (!confirm("are you sure?")) return;
@@ -28,5 +18,5 @@ export const RemoveButton: FC<RemoveButtonProps> = ({
     }}
   >
     delete
-  </Button>
+  </button>
 );

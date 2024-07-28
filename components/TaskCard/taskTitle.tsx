@@ -10,9 +10,8 @@ interface TitleProps {
 
 export const Title: FC<TitleProps> = ({ des, taskEdit }) => {
   return (
-    <Box
-      component="h3"
-      sx={{ color: "#fff" }}
+    <h3
+      className="text-[#fff]"
       onClick={async () => {
         const newDes = prompt("new name:");
         if (!newDes) return;
@@ -20,6 +19,6 @@ export const Title: FC<TitleProps> = ({ des, taskEdit }) => {
       }}
     >
       {des}
-    </Box>
+    </h3>
   );
 };

@@ -39,11 +39,7 @@ const StatusDropDown: FC<Select> = ({
     revalidatePath(`/${boardId}`);
   }
   return (
-    <DropDown
-      taskStatus={taskStatus}
-      columnId={columnId}
-      columns={JSON.parse(JSON.stringify(columns))}
-    />
+    <DropDown taskStatus={taskStatus} columnId={columnId} columns={columns} />
   );
 };
 

@@ -41,17 +41,7 @@ export const TaskCard: FC<TaskCardProps> = ({
       revalidatePath(`/${boardId}`);
     }
     return (
-      <Box
-        sx={{
-          background: "#5f5fc2",
-          padding: 1,
-          borderRadius: 1,
-          display: "flex",
-          flexDirection: "column",
-          gap: 1,
-        }}
-        key={i}
-      >
+      <div className="flex flex-col gap-2 bg-[#5f5fc2] p-3 rounded-md" key={i}>
         <Title des={task.taskDes || ""} taskEdit={taskEdit} />
         <StatusDropDown
           columnId={columnId}
@@ -60,7 +50,7 @@ export const TaskCard: FC<TaskCardProps> = ({
           columns={columns}
           taskDes={task.taskDes || ""}
         />
-      </Box>
+      </div>
     );
   });
 };

@@ -1,5 +1,3 @@
-import { Box, Stack, Card } from "@mui/material";
-
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
 
@@ -16,7 +14,7 @@ export default async function Page() {
   const boards = toPlainObj(await Board.find({}).lean());
 
   return (
-    <Stack direction="row" gap={1}>
+    <div className="flex gap-7">
       <Input
         handleSubmit={async (name) => {
           "use server";
@@ -32,7 +30,7 @@ export default async function Page() {
           revalidatePath("/");
         }}
       />
-      <Stack direction="row" gap={1}>
+      <div className="flex gap-4">
         {boards.map((board, i) => {
           async function handleBoardEdit(newName: string) {
             "use server";
@@ -52,23 +50,18 @@ export default async function Page() {
           }
 
           return (
-            <Card
-              key={i}
-              sx={{ maxWidth: 150, background: "#9090de", borderRadius: 2 }}
-            >
+            <div className="bg-[#9090de] max-w-[150px] rounded" key={i}>
               <Link key={i} href={`/${board._id}`}>
-                <Box component="h1" sx={{ padding: 1, textAlign: "center" }}>
-                  {board.name}
-                </Box>
+                <h1 className="text-center p-3 text-[20px]">{board.name}</h1>
               </Link>
-              <Stack direction="row" justifyContent="space-between" gap={1}>
+              <div className="flex justify-between gap-5">
                 <EditButton onRequestBoardEdit={handleBoardEdit} />
                 <RemoveButton onRequestBoardRemove={handleBoardRemove} />
-              </Stack>
-            </Card>
+              </div>
+            </div>
           );
         })}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 }

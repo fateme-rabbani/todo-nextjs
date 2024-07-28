@@ -10,9 +10,8 @@ interface InputProps {
 const TitleForm: FC<InputProps> = ({ handleSubmit }) => {
   const [value, setValue] = useState("");
   return (
-    <Box
-      component="form"
-      sx={{ display: "flex", gap: 1, alignItems: "center" }}
+    <form
+      className="flex gap-3 items-center"
       onSubmit={(e) => {
         e.preventDefault();
         if (!value) return;
@@ -20,32 +19,19 @@ const TitleForm: FC<InputProps> = ({ handleSubmit }) => {
         setValue("");
       }}
     >
-      <Input
-        sx={{
-          minWidth: 150,
-          height: 27,
-          border: 1,
-          "& input": { height: 27, padding: 0 },
-        }}
+      <input
+        className="min-w-[150px] height-[27px] rounded "
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <Button
-        sx={{
-          width: 50,
-          borderRadius: 5,
-          background: "#9090de",
-          color: "#000",
-          fontSize: 12,
-          border: 1,
-          borderColor: "#3B3BB1",
-        }}
+      <button
+        className="min-w-[70px] bg-[#9090de] text-[#000] text-[20px] rounded-full border bprder-[#3B3BB1]"
         type="submit"
         disabled={!value}
       >
         add
-      </Button>
-    </Box>
+      </button>
+    </form>
   );
 };
 export default TitleForm;

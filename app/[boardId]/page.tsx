@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { Box } from "@mui/material";
 import { revalidatePath } from "next/cache";
 import { Types } from "mongoose";
 import z from "zod";
@@ -9,6 +8,7 @@ import Board from "@/models/Board";
 import TitleForm from "../../components/TitleForm";
 import TasksColumn from "../../components/TasksColumn";
 import { notFound } from "next/navigation";
+import toPlainObj from "@/utils/toPlainObj";
 
 export const paramsSchema = z.object({ boardId: z.string().length(24) });
 
@@ -16,22 +16,14 @@ const BoardPage: FC<NextPageProps> = async (props) => {
   const { boardId } = paramsSchema.parse(props.params);
 
   await connectDB();
-  const board = await Board.findOne({ _id: boardId });
+  const board = toPlainObj(await Board.findOne({ _id: boardId }).lean());
 
   if (!board) notFound();
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        gap: 2,
-        padding: 2,
-      }}
-    >
-      <Box>
-        <Box component="h1" sx={{ color: "#3b3bb1" }}>
-          board
-        </Box>
+    <div className="flex gap-10 p-2">
+      <div>
+        <h1 className="text-[30px] font-bold">board</h1>
         <TitleForm
           handleSubmit={async (name) => {
             "use server";
@@ -46,7 +38,7 @@ const BoardPage: FC<NextPageProps> = async (props) => {
             revalidatePath(`/${boardId}`);
           }}
         />
-      </Box>
+      </div>
 
       {board.columns.map((col) => (
         <TasksColumn
@@ -58,7 +50,7 @@ const BoardPage: FC<NextPageProps> = async (props) => {
           columns={board.columns}
         />
       ))}
-    </Box>
+    </div>
   );
 };
 export default BoardPage;
