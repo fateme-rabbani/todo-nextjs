@@ -1,5 +1,3 @@
-import { Box } from "@mui/material";
-
 import { FC } from "react";
 import { Types } from "mongoose";
 import { revalidatePath } from "next/cache";
@@ -41,43 +39,18 @@ const TasksColumn: FC<TasksListProps> = ({
   boardId,
   columns,
 }) => (
-  <Box
-    sx={{
-      background: "#9090de",
-      padding: 2,
-      borderRadius: 1,
-      minWidth: 250,
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
-      gap: 2,
-    }}
-  >
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-      }}
-    >
-      <Box
-        component="h1"
-        sx={{
-          color: "#fff",
-          background: "#3b3bb1",
-          padding: 2,
-          borderRadius: 1,
-        }}
-      >
+  <div className="flex justify-between flex-col gap-10 bg-[#9090de] p-7 rounded-md min-w-[280px] ">
+    <div className="flex flex-col gap-5">
+      <h1 className="text-[25px] p-4 bg-[#3b3bb1] text-[#fff] rounded-md">
         {name}
-      </Box>
+      </h1>
       <TaskCard
         tasks={tasks}
         columnId={columnId}
         boardId={boardId}
         columns={columns}
       />
-    </Box>
+    </div>
 
     <TitleForm
       handleSubmit={async (taskDes) => {
@@ -96,6 +69,6 @@ const TasksColumn: FC<TasksListProps> = ({
         revalidatePath(`/${boardId}`);
       }}
     />
-  </Box>
+  </div>
 );
 export default TasksColumn;
