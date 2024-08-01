@@ -1,5 +1,3 @@
-import { Box } from "@mui/material";
-
 import { FC } from "react";
 import { revalidatePath } from "next/cache";
 
@@ -8,7 +6,7 @@ import connectDB from "@/utils/connectDB";
 import Board from "@/models/Board";
 import StatusDropDown from "../StatusDropDown";
 import { Title } from "./taskTitle";
-import { Column, Task } from "@/app/layout";
+import { Column, Task } from "../TasksColumn";
 
 export interface TaskCardProps {
   tasks: Task[];
@@ -41,7 +39,7 @@ export const TaskCard: FC<TaskCardProps> = ({
       revalidatePath(`/${boardId}`);
     }
     return (
-      <div className="flex flex-col gap-2 bg-[#5f5fc2] p-3 rounded-md" key={i}>
+      <div className="flex flex-col gap-2 bg-violet-600 p-3 rounded-md" key={i}>
         <Title des={task.taskDes || ""} taskEdit={taskEdit} />
         <StatusDropDown
           columnId={columnId}

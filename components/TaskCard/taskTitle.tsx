@@ -1,5 +1,4 @@
 "use client";
-import { Box } from "@mui/material";
 
 import { FC } from "react";
 
@@ -11,7 +10,7 @@ interface TitleProps {
 export const Title: FC<TitleProps> = ({ des, taskEdit }) => {
   return (
     <h3
-      className="text-[#fff]"
+      className="text-slate-50"
       onClick={async () => {
         const newDes = prompt("new name:");
         if (!newDes) return;

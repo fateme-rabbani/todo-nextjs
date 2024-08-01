@@ -2,9 +2,9 @@ import { FC } from "react";
 import { revalidatePath } from "next/cache";
 
 import connectDB from "@/utils/connectDB";
-import { Column } from "@/app/layout";
 import Board from "@/models/Board";
 import { DropDown } from "./dropDown";
+import { Column } from "../TasksColumn";
 
 interface Select {
   columnId: string;

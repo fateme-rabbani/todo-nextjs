@@ -1,5 +1,4 @@
 "use client";
-import { Input, Button, Box } from "@mui/material";
 
 import { FC, useState } from "react";
 
@@ -20,12 +19,12 @@ const TitleForm: FC<InputProps> = ({ handleSubmit }) => {
       }}
     >
       <input
-        className="min-w-[150px] height-[27px] rounded "
+        className="rounded"
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
       <button
-        className="min-w-[70px] bg-[#9090de] text-[#000] text-[20px] rounded-full border bprder-[#3B3BB1]"
+        className="w-16 bg-violet-500 text-slate-950 text-xl rounded-full border border-violet-900"
         type="submit"
         disabled={!value}
       >

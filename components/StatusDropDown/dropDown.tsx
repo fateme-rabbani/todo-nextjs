@@ -1,8 +1,7 @@
 "use client";
 
 import { FC } from "react";
-
-import { Column } from "@/app/layout";
+import { Column } from "../TasksColumn";
 
 interface DropDownProps {
   taskStatus(value: string): void;
@@ -20,7 +19,7 @@ export const DropDown: FC<DropDownProps> = ({
     ?._id.toString();
   return (
     <select
-      className="bg-[#3b3bb1] text-[#fff] p-1 rounded"
+      className="bg-violet-800 text-slate-50 p-1 rounded"
       value={value}
       onChange={async (e: any) => {
         const value = e.target.value;

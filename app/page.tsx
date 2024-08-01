@@ -50,9 +50,9 @@ export default async function Page() {
           }
 
           return (
-            <div className="bg-[#9090de] max-w-[150px] rounded" key={i}>
+            <div className="bg-violet-400 w-full rounded" key={i}>
               <Link key={i} href={`/${board._id}`}>
-                <h1 className="text-center p-3 text-[20px]">{board.name}</h1>
+                <h1 className="text-center p-3 text-lg">{board.name}</h1>
               </Link>
               <div className="flex justify-between gap-5">
                 <EditButton onRequestBoardEdit={handleBoardEdit} />

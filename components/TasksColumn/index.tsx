@@ -39,9 +39,9 @@ const TasksColumn: FC<TasksListProps> = ({
   boardId,
   columns,
 }) => (
-  <div className="flex justify-between flex-col gap-10 bg-[#9090de] p-7 rounded-md min-w-[280px] ">
+  <div className="flex justify-between flex-col gap-10 bg-violet-400 p-7 rounded-md">
     <div className="flex flex-col gap-5">
-      <h1 className="text-[25px] p-4 bg-[#3b3bb1] text-[#fff] rounded-md">
+      <h1 className="text-xl p-4 bg-violet-900 text-slate-50 rounded-md">
         {name}
       </h1>
       <TaskCard

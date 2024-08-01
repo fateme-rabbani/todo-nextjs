@@ -23,7 +23,7 @@ const BoardPage: FC<NextPageProps> = async (props) => {
   return (
     <div className="flex gap-10 p-2">
       <div>
-        <h1 className="text-[30px] font-bold">board</h1>
+        <h1 className="text-3xl font-bold">board</h1>
         <TitleForm
           handleSubmit={async (name) => {
             "use server";

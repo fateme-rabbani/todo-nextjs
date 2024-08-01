@@ -8,7 +8,7 @@ export interface EditButtonProps {
 
 export const EditButton: FC<EditButtonProps> = ({ onRequestBoardEdit }) => (
   <button
-    className="w-[70px] border border-[#000] bg-[#3b3bb1] text-[14px] text-[#fff] p-3 text-center rounded-md hover:bg-[#9090DE] transition-all duration-300"
+    className="border border-slate-950 bg-violet-900 text-base text-slate-50 p-3 text-center rounded-md hover:bg-violet-600 transition-all duration-300"
     onClick={async (e) => {
       e.stopPropagation();
       const newDes = prompt("new name:");
