@@ -5,8 +5,8 @@ import z from "zod";
 
 import connectDB from "@/utils/connectDB";
 import Board from "@/models/Board";
-import TitleForm from "../../components/TitleForm";
-import TasksColumn from "../../components/TasksColumn";
+import TitleForm from "../../../components/TitleForm";
+import TasksColumn from "../../../components/TasksColumn";
 import { notFound } from "next/navigation";
 import toPlainObj from "@/utils/toPlainObj";
 

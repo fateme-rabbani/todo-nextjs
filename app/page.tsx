@@ -1,66 +1,19 @@
+import Image from "next/image";
 import Link from "next/link";
-import { revalidatePath } from "next/cache";
-
-import connectDB from "@/utils/connectDB";
-
-import Board from "@/models/Board";
-import Input from "@/components/TitleForm";
-import toPlainObj from "@/utils/toPlainObj";
-import { EditButton } from "./editBoardButton";
-import { RemoveButton } from "./removeBoardButton";
-
+import pic from "../assets/img/1.jpg";
 export default async function Page() {
-  await connectDB();
-  const boards = toPlainObj(await Board.find({}).lean());
-
   return (
-    <div className="flex gap-7">
-      <Input
-        handleSubmit={async (name) => {
-          "use server";
-          await connectDB();
-          await Board.create({
-            name,
-            columns: [
-              { name: "todo", tasks: [] },
-              { name: "doing", tasks: [] },
-              { name: "done", tasks: [] },
-            ],
-          });
-          revalidatePath("/");
-        }}
-      />
-      <div className="flex gap-4">
-        {boards.map((board, i) => {
-          async function handleBoardEdit(newName: string) {
-            "use server";
-            await connectDB();
-            const b = await Board.findOne({ _id: board._id });
-            if (!b) return;
-            b.name = newName;
-            b.save();
-            revalidatePath("/");
-          }
-
-          async function handleBoardRemove() {
-            "use server";
-            await connectDB();
-            await Board.deleteOne({ _id: board._id });
-            revalidatePath("/");
-          }
-
-          return (
-            <div className="bg-violet-400 w-full rounded" key={i}>
-              <Link key={i} href={`/${board._id}`}>
-                <h1 className="text-center p-3 text-lg">{board.name}</h1>
-              </Link>
-              <div className="flex justify-between gap-5">
-                <EditButton onRequestBoardEdit={handleBoardEdit} />
-                <RemoveButton onRequestBoardRemove={handleBoardRemove} />
-              </div>
-            </div>
-          );
-        })}
+    <div className="h-full">
+      <Image style={{ width: "100%", height: "100%" }} src={pic} alt="" />
+      <div className="absolute top-0 flex flex-col justify-between bg-violet-500 h-full p-5 rounded-r">
+        <div className="flex flex-col gap-5">
+          <Link href="/gallery">
+            <div className="text-slate-50">gallery</div>
+          </Link>
+          <Link href="/boards">
+            <div className="text-slate-50">boards</div>
+          </Link>
+        </div>
       </div>
     </div>
   );
